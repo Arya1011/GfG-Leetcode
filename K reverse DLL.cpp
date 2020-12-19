@@ -75,7 +75,7 @@ void push(Node*&newHead,Node*C){
        C->prev=NULL;
        C->next=newHead;
 
-       if(newHead=NULL)
+       if(newHead!=NULL)
        {
            newHead->prev=C;
        }
