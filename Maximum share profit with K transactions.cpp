@@ -26,10 +26,11 @@ int maxProfit(vector<int> prices,int k){
 
       //i means transactions,j here means days
       for(int i=1;i<=k;i++){
+            //prices array only available till (n-1)th index
           for(int j=1;j<n;j++){
               int possible=INT_MIN;
-              for(int k=0;k<j;k++){
-                  possible=max(possible,prices[j]-prices[k]+profit[i-1][k]);
+              for(int m=0;m<j;m++){
+                  possible=max(possible,prices[j]-prices[m]+profit[i-1][m]);
               }
               profit[i][j]=max(profit[i][j-1],possible);
           }
