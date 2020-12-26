@@ -26,7 +26,7 @@ int maxProfit(vector<int> prices,int k){
 
       //i means transactions,j here means days
       for(int i=1;i<=k;i++){
-          for(int j=1;j<=n;j++){
+          for(int j=1;j<n;j++){
               int possible=INT_MIN;
               for(int k=0;k<j;k++){
                   possible=max(possible,prices[j]-prices[k]+profit[i-1][k]);
@@ -35,7 +35,7 @@ int maxProfit(vector<int> prices,int k){
           }
       }
 
-      return profit[k][n];
+      return profit[k][n-1];
 
 }
 
