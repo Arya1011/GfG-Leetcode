@@ -50,3 +50,43 @@ Node * mergeKLists(Node *arr[], int N)
         return newHead->next;
        
 }
+
+
+class compare{
+   
+      public:
+         bool operator()(Node*a,Node*b){
+              return a->data>b->data;
+         }
+ };
+  
+Node * mergeKLists(Node *arr[], int K)
+{
+       // Your code here
+       
+       priority_queue<Node*,vector<Node*>,compare> pq;
+       for(int i=0;i<K;i++){
+           pq.push(arr[i]);
+       }
+       struct Node*first=NULL;
+       struct Node*last=NULL;
+       while(!pq.empty()){
+           struct Node*top=pq.top();
+           pq.pop();
+           if(top->next!=NULL){
+               pq.push(top->next);
+           }
+           
+           if(first==NULL){
+               first=top;
+               last=top;
+           }
+           
+           else{
+               last->next=top;
+               last=top;
+           }
+       }
+       return first;
+}
+
