@@ -1,6 +1,8 @@
 //https://leetcode.com/problems/jump-game/
 
 
+//Jump Game 1
+
 //Backtracking O(2^n)
 class Solution {
 public:
@@ -53,3 +55,39 @@ public:
         
     }
 };
+
+
+
+//Jump Game 2
+
+//DP appraoch O(n^2)
+
+class Solution {
+public:
+    int jump(vector<int>& nums) 
+    {
+        int n=nums.size();
+        vector<int> dp(n,0);
+        
+        if(n==1){
+            return 0;
+        }
+        
+        if(n==0 || nums[0]==0){
+            return -1;
+        }
+        //dp[i] means min jumps to reach index i
+        for(int pos=1;pos<n;pos++){
+            dp[pos]=INT_MAX;
+            for(int j=0;j<pos;j++){
+                if(nums[j]+j>=pos && dp[j]!=INT_MAX){
+                    dp[pos]=min(dp[j]+1,dp[pos]);
+                    break;
+                }
+            }
+        }
+        return dp[n-1];
+    }
+};
+
+
