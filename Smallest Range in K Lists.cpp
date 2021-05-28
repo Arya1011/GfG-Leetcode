@@ -1,33 +1,52 @@
-typedef pair<int, pair<int, int>> pi;
+
+typedef pair<int,pair<int,int>> custom;
+
 class Solution {
 public:
-    vector<int> smallestRange(vector<vector<int>>& nums) {
-        int n = nums.size();
-        priority_queue<pi, vector<pi>, greater<pi>> pq;
-        int mn = INT_MAX, mx = INT_MIN, range = INT_MAX;
-        for (int i=0; i<n; i++) {
-            pq.push({nums[i][0], {i, 0}});
-            mn = min(mn, nums[i][0]);
-            mx = max(mx, nums[i][0]);
+    vector<int> smallestRange(vector<vector<int>>& nums) 
+    {
+        priority_queue<custom,vector<custom>,greater<custom>> pq;
+        int n=nums.size();
+        int mx=INT_MIN,mn=INT_MAX;
+        for(int i=0;i<n;i++)
+        {
+             pq.push({nums[i][0],{i,0}});
+             mx=max(mx,nums[i][0]);
         }
-        int a = mn, b = mx;
-        while (!pq.empty()) {
-            pi curr = pq.top();
-            pq.pop();
-            //cout<<curr.first<<" "<<curr.second.first<<" "<<curr.second.second<<endl;
-            if (curr.second.second + 1 < nums[curr.second.first].size()) {
-                int r = curr.second.first, c = curr.second.second + 1;
-                pq.push({nums[r][c], {r, c}});
-                mn = pq.top().first;
-                mx = max(mx, nums[r][c]);
-                if (b-a > mx-mn) {
-                    a = mn;
-                    b = mx;
-                }
-            } else {
-                break;
-            }
+        
+        mn=pq.top().first;
+        
+        int a=mn;
+        int b=mx;
+        
+        while(!pq.empty())
+        {
+              custom curr=pq.top();
+              pq.pop();
+             
+              int x= curr.second.first;
+              int y=curr.second.second;
+            
+              if(y+1<nums[x].size())
+              {
+                  pq.push({nums[x][y+1],{x,y+1}});
+                  mn=pq.top().first;
+                  mx=max(mx,nums[x][y+1]);    
+                  if(mx-mn<b-a){
+                      a=mn;
+                      b=mx;
+                  }
+              }
+            
+              else{
+                  break;
+              }
         }
-        return {a, b};
+         
+        
+        
+        return {a,b};
+    
+        
     }
 };
