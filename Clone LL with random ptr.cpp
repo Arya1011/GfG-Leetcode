@@ -1,63 +1,70 @@
-
-
-//https://practice.geeksforgeeks.org/problems/clone-a-linked-list-with-next-and-random-pointer/1#
-
-struct Node {
-    int data;
-    Node *next;
-    Node *arb;
-
-    Node(int x) {
-        data = x;
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+    
+    Node(int _val) {
+        val = _val;
         next = NULL;
-        arb = NULL;
+        random = NULL;
     }
 };
 */
 
-// Should return the head of the copied linked list the
-// output will be 1 if successfully copied
-Node *copyList(Node *head) {
-    // Your code here
-    
-     struct Node*curr=head;
-     
-     //Break next pinter conncection
-     while(curr!=NULL){
-         Node*nxt=curr->next;
-         curr->next=new Node(curr->data);
-         curr->next->next=nxt;
-         curr=nxt;
-     }
-     
-     
-     //Arbitrary pointers
-     curr=head;
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        
+        Node*iter=head;
+        Node*front=head;
+        
+        //Make copies of each node
+        
+        while(iter!=NULL)
+        {
+            front=iter->next;
+            Node*copy=new Node(iter->val);
+            iter->next=copy;
+            copy->next=front;
+            iter=front;
+        }
+        
+        
+        iter=head;
+        //Assign random pointers
 
-     while(curr){
-         if(curr->arb){
-             curr->next->arb=curr->arb->next;
+         while(iter!=NULL)
+         {
+             if(iter->random!=NULL){
+                iter->next->random=iter->random->next;
+             }
+             iter=iter->next->next;
          }
-         else{
-             curr->next->arb=NULL;
-         }
-         curr=curr->next->next;
-     }
-     
-     
-     //next pointers
-     Node*newHead=new Node(0);
-     Node*newCurr=newHead;
-     curr=head;
-     
-     while(curr){
-         newCurr->next=curr->next;
-         curr->next=newCurr->next->next;
-         curr=curr->next;
-         newCurr=newCurr->next;
-     }
-     
-    
-    return newHead->next;
-    
-}
+        
+        
+        
+        //Seperate the two lists
+        
+        iter=head;
+        Node*pseudohead=new Node(0);
+        Node*copy=pseudohead;
+        
+        while(iter!=NULL){
+            
+            front=iter->next->next;
+            copy->next=iter->next;
+            
+            //restore original list
+            iter->next=front;
+            copy=copy->next;
+            iter=front;
+        }
+        
+        return pseudohead->next;
+        
+        
+    }
+};
