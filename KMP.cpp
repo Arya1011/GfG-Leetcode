@@ -1,66 +1,86 @@
 
-//O(n)
-void preprocess(const string B,vector<int>&reset)
+
+
+//KMP Algorithm
+
+#include<bits/stdc++.h>
+using namespace std;
+
+void preprocess(int*lps,string p,int m)
 {
-          int m=B.size();
-          int len=0;
-          int i=1;
-          while(i<m){
-              if(B[i]==B[len]){
-                  len++;
-                  reset[i]=len;
-                  i++;
-              }
-              else{
-                  if(len!=0){
-                      len=reset[len-1];
-                  }
-                  
-                  else{
-                      reset[i]=0;
-                      i++;
-                  }
-              }
-          }
+       int j=0;
+       lps[0]=0;
+       int i=1;
+       while(i<m)
+       {
+            if(p[i]==p[j])
+            {
+                lps[i]=j+1;
+                i++;
+                j++;
+            }
+            else
+            {
+                if(j!=0)
+                {
+                    j=lps[j-1];
+                }
+
+                else
+                {
+                    lps[i]=0;
+                    i++;
+                }
+            }
+       }
 }
 
-int Solution::strStr(const string A, const string B) 
+
+void KMP(string s,string p)
 {
-          int n=A.size();
-          int m=B.size();
-          //KMP algorithm
-          
-          vector<int> reset(m);
-          reset[0]=0;
-          
-          preprocess(B,reset);
-          int i=0;
-          int j=0;
-          
-          //O(n-m+1)
-          while(i<n){
-              if(A[i]==B[j]){
-                  i++;
-                  j++;
-              }
-              
-              if(j==m){
-                  
-                  int ans= i-j;
-                  j=reset[j-1];
-                  return ans;
-              }
-              
-              else if(i<n && A[i]!=B[j]){
-                  if(j!=0){
-                      j=reset[j-1];
-                  }
-                  
-                  else{
-                      i++;
-                  }
-              }
-              
+      int n=s.size();
+      int m=p.size();
+      int lps[m];
+      preprocess(lps,p,m);
+
+      int i=0;
+      int j=0;
+
+      while(i<n){
+          if(s[i]==p[j]){
+              i++;
+              j++;
           }
-      return -1;
+
+           //match found
+           if(j==m){
+
+                 cout<<"Pattern at index "<<(i-j)<<endl;
+                 j=lps[j-1];
+
+           }
+
+          else if(i<n && p[j]!=s[i]){
+              if(j==0){
+                  i=i+1;
+              }
+
+              else{
+                  j=lps[j-1];
+              }
+          }
+      }
+
+
+
+}
+
+
+int main(){
+    string s,p;
+    cin>>s;
+    cin>>p;
+
+    KMP(s,p);
+
 }
