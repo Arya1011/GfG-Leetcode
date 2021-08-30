@@ -10,8 +10,7 @@ void solve()
     unordered_map<int,int> mp;
     int curr_sum=0;
     int max_len=INT_MIN;
-
-     int s,e;
+    int s,e;
 
     for(int i=0;i<arr.size();i++){
         curr_sum+=arr[i];
